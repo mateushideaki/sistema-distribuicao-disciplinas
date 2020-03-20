@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Alocação de professores e turmas 6</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Menu Principal" rendered="#{usuarioBean.verificaSessao()}" outcome="menuPrincipal"  icon="ui-icon-home">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                </p:tabMenu>
+            </center>                
+        </h:form>
+
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+
+
+
+        <center>
+            <h:form  rendered="#{usuarioBean.verificaSessao()}">
+                <br/>
+                <strong>ALOCAÇÃO DE PROFESSORES E TURMAS</strong> 
+                <br/><br/>
+                <p:panel id="panel" header="Passo 5 - Parametros da alocação.">   
+                    <br/>
+                    <h:panelGrid columns="2" border="0" cellpadding="2">
+                        <h:outputText value="Carga Horária:"/>
+                        <p:selectOneRadio id="ch" value="#{alocacaoBean.anual}" required="true">
+                            <f:selectItem itemLabel="Anual" itemValue="true" />    
+                            <f:selectItem itemLabel="Semanal" itemValue="false" />     
+                        </p:selectOneRadio>
+                        
+                        
+                        <h:outputText value="Modelo Equitativo:"/>
+                        <p:selectOneRadio id="eq" value="#{alocacaoBean.equitativo}" required="true">
+                            <f:selectItem itemLabel="Sim" itemValue="true" />    
+                            <f:selectItem itemLabel="Não" itemValue="false" />     
+                        </p:selectOneRadio>
+                        
+                        <h:outputText value="Horários Extremos:"/>
+                        <p:selectOneRadio id="hext" value="#{alocacaoBean.hext}" required="true">
+                            <f:selectItem itemLabel="Sim" itemValue="true" />    
+                            <f:selectItem itemLabel="Não" itemValue="false" />     
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+                    <br/><br/>
+                    <p:commandButton  value="Passo 4" iconPos="right" icon="ui-icon-seek-prev" action="#{alocacaoBean.passo4()}"/>
+                    <p:commandButton  value="Passo 6" icon="ui-icon-seek-next" action="#{alocacaoBean.passo6()}"/>
+                </p:panel>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
+
+

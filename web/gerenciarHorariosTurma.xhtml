@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gerenciamento de horarios de turmas</title>
+    </h:head>
+    
+    
+    <h:body>
+        
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem  value="Vincular novos horarios" outcome="cadastrarHorariosTurma"  icon="ui-icon-plus">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                    
+                    <p:menuitem onclick="#{turmaBean.limpaHT()}" value="Gerenciar Turmas" outcome="gerenciarTurmas"  icon="ui-icon-arrowthick-1-w">
+                        <f:param name="i" value="1" />
+                    </p:menuitem>
+                </p:tabMenu>
+           </center>                
+        </h:form>
+        
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+        
+        
+        
+        <center>
+
+            <h:form id="formTabela" rendered="#{usuarioBean.verificaSessao()}">
+                <br/>
+                <strong>HORARIOS DA TURMA <h:outputText value="#{turmaBean.turma.codigo}"/>  </strong>  <br/><br/>
+                <br/><br/>
+                <h:panelGrid columns="3">
+                    <br/> <p:inputText id="nomeBusca"  value="#{turmaBean.busca2}"/>
+                    <p:commandButton id="botaoBusca"   value="Pesquisar" icon="ui-icon-search" ajax="false"/>
+                    <br/>
+                </h:panelGrid>
+                <p:watermark for="nomeBusca" value="Digite o dia"  id="watermark" />
+
+                <p:dataTable  value="#{turmaBean.listarHorariosTurma()}" var="teste" id="tabela" >      
+                    <p:column>
+                        <f:facet name="header">
+                            CODIGO_TURMA
+                        </f:facet>
+                        <h:outputText value="#{teste.codigoTurma}"/>
+                    </p:column>
+
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            DIA
+                        </f:facet>
+                        <h:outputText value="#{teste.nomeDia}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            AULA
+                        </f:facet>
+                        <h:outputText value="#{teste.horario.aula}"/>
+                    </p:column>
+                  
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            AÇÕES
+                        </f:facet>
+
+                        <p:commandButton update=":formTabela:tabela"  value="Excluir" icon="ui-icon-close" actionListener="#{turmaBean.removerHorarioTurma(teste)}">
+                            <p:confirm header="Confirmação" message="Esta ação não poderá ser desfeita, deseja continuar?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" id="hehe">
+                            <p:commandButton value="Sim" ajax="false" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="Não" ajax="false" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+
+                    </p:column>
+                </p:dataTable>
+                <br/><br/>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
+
+
+
+

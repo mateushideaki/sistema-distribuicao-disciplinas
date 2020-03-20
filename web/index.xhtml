@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>Login</title>
+        <style>
+            .Bimage2{background-image: url("resources/images/img2.png");
+                     background-repeat:no-repeat;
+                     background-attachment: fixed;
+                     background-position: 280px 113px;
+            }
+
+        </style>
+    </h:head>
+    <h:body styleClass="Bimage2 Bimage">
+
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem onclick="#{usuarioBean.apagaMensagem()},#{usuarioBean.encerrarSessao()}" value="Cadastrar usuario" outcome="cadastrarUsuarioProfessor"  icon="ui-icon-person">
+                        <f:param  name="i" value="0" />
+                    </p:menuitem>   
+                </p:tabMenu>
+            </center>                
+        </h:form>
+
+        <h:form>
+            <center>
+                <br/>
+                <strong>SISTEMA DE DISTRIBUIÇÃO DE DISCIPLINAS</strong>
+                <br/><br/>
+                <h:panelGrid id="login" columns ="2" cellpadding="2">
+                    Login:  <p:inputText id="loginTxt" value="#{usuarioBean.usuario.login}" required="true"/>
+                    Senha:  <p:password id="senhaTxt" value="#{usuarioBean.usuario.senha}" required="true"/>
+                    <h:inputHidden/>
+                    <p:commandButton update="mensagem2, login" value="Entrar" icon="ui-icon-check" action="#{usuarioBean.verificaLogin()}"/>
+
+                </h:panelGrid>
+
+                <h:outputLabel  id="mensagem2" value="#{usuarioBean.mensagemLogin}"/>
+
+                <br/><br/>
+            </center>
+        </h:form>
+    </h:body>
+</html>
+

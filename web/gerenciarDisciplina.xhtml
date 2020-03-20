@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gerenciamento de Disciplinas</title>
+    </h:head>
+    <h:body>
+        
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem onclick="#{disciplinaBean.limpaDisc()}" value="Cadastrar disciplina" outcome="cadastrarDisciplina"  icon="ui-icon-plus">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                    
+                    <p:menuitem value="Menu Principal" outcome="menuPrincipal"  icon="ui-icon-home">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                </p:tabMenu>
+           </center>                
+        </h:form>
+        
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+        
+        
+        
+        <center>
+
+            <h:form id="formTabela" rendered="#{usuarioBean.verificaSessao()}">
+                <br/>
+                <strong>GERENCIAMENTO DE DISCIPLINAS</strong> 
+                <br/><br/>
+                <h:panelGrid columns="3">
+                    <br/>  <p:inputText id="buscaTxt" value="#{disciplinaBean.busca.nome}"/>
+                    <p:commandButton id="botaoBusca" icon="ui-icon-search"  value="Pesquisar" ajax="false"/>
+                    <br/>
+                </h:panelGrid>
+                <p:watermark for="buscaTxt" value="Digite uma disciplina" id="watermark" />
+
+                <p:dataTable value="#{disciplinaBean.listarDisciplinas()}" var="teste"  id="tabela" >
+                    <p:column>
+                        <f:facet name="header">
+                            CODIGO
+                        </f:facet>
+                        <h:outputText value="#{teste.codigo}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            DISCIPLINA
+                        </f:facet>
+                        <h:outputText value="#{teste.nome}"/>
+                    </p:column>
+                    
+                    <p:column width="300">
+                        <f:facet name="header">
+                            AÇÕES
+                        </f:facet>
+                        <p:commandButton update=":formTabela:tabela" value="Excluir" icon="ui-icon-close" action ="#{disciplinaBean.removerDisciplina(teste)}" onclick="#{turmaBean.modificou()}">
+                            <p:confirm header="Confirmação" message="Esta ação não poderá ser desfeita, deseja continuar?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" id="hehe">
+                            <p:commandButton value="Sim" ajax="false" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="Não" ajax="false" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+                        
+                        <h:outputText value=" "/>
+                        <p:commandButton value="Editar" icon="ui-icon-wrench" action="#{disciplinaBean.carregarDisciplina(teste)}" />
+                        
+                    </p:column>
+                </p:dataTable>
+                <br/><br/>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+

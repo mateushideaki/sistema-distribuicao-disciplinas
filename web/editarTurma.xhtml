@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Atualizar Turma</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Voltar" outcome="gerenciarTurmas"  icon="ui-icon-arrowthick-1-w">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                </p:tabMenu>
+            </center>                
+        </h:form>
+
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+        <h:form  rendered="#{usuarioBean.verificaSessao()}">
+            <br/>
+            <center>
+                <p:panel id="panel" header="ATUALIZAR TURMA"><br/>
+                    <h:panelGrid columns="2" border="0" cellpadding="2">
+                        <h:outputText value="Codigo:"/>
+                        <p:inputText id="nomeTxt" value="#{turmaBean.cod}" required="true" size="12"/>
+                        
+                        
+                        <h:outputLabel for="menu" value="Disciplina:" />
+                        <h:form>
+                            <h:panelGrid columns="2" style="margin-bottom:2px" cellpadding="2">
+                                <p:selectOneMenu id="console" filter="true" filterMatchMode="contains" value="#{turmaBean.disciplinaSelecionada}" style="width:150px" required="true">
+                                    <f:selectItems var="turma"  value="#{disciplinaBean.disciplinasString2}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>  
+                        </h:form>
+                        
+                        <h:outputLabel for="menu" value="Curso:" />
+                            <h:panelGrid columns="2" style="margin-bottom:2px" cellpadding="2">
+                                <p:selectOneMenu id="console" filter="true" filterMatchMode="contains" value="#{turmaBean.cursoSelecionado}" style="width:150px" required="true">
+                                    <f:selectItems var="turma"  value="#{cursoBean.listarCursoParaTurmas()}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid> 
+                        
+                        Carga Total: <p:inputText value="#{turmaBean.turma.cargaTotal}" required="true" size="12"/>
+                        Anual: 
+                        <p:selectOneRadio value="#{turmaBean.turma.anual}" required="true">
+                            <f:selectItem  itemValue="true" itemLabel="Sim"/>
+                            <f:selectItem itemValue="false" itemLabel="Nao"/>
+                            <p:ajax update="panelGeral"  event="change"/>
+                            <p:ajax update="panelGeral2"  event="change"/>
+                        </p:selectOneRadio>
+                        <p:outputPanel id="panelGeral2">
+                            <h:outputText value="Semestre:" rendered="#{turmaBean.turma.anual == false}"/>
+                        </p:outputPanel>
+                        <p:outputPanel id="panelGeral">
+                            <h:selectOneRadio value="#{turmaBean.turma.semestre}" required="#{turmaBean.turma.anual == false}" rendered="#{turmaBean.turma.anual == false}">
+                                <f:selectItem itemValue="1" itemLabel="1"/>
+                                <f:selectItem itemValue="2" itemLabel="2"/>
+                            </h:selectOneRadio>
+                        </p:outputPanel>
+                        
+                        
+                        <h:inputHidden/>
+                        <p:commandButton value="Atualizar" icon="ui-icon-refresh" action="#{turmaBean.atualizarTurma()}" ajax="false"/> 
+                    </h:panelGrid>
+                </p:panel>
+            </center>
+        </h:form>
+    </h:body>
+</html>
+

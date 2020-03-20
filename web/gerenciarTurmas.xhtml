@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gerenciamento de Turmas</title>
+    </h:head>
+    
+    
+    <h:body>
+        
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem onclick="#{turmaBean.limparTurma()}" value="Cadastrar turma" outcome="cadastrarTurma"  icon="ui-icon-plus">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                    
+                    <p:menuitem value="Menu Principal" outcome="menuPrincipal"  icon="ui-icon-home">
+                        <f:param name="i" value="1" />
+                    </p:menuitem>
+                </p:tabMenu>
+           </center>                
+        </h:form>
+        
+        
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+        <center>
+            <h:form rendered="#{usuarioBean.verificaSessao()}">
+                <br/>
+                <strong>GERENCIAMENTO DE TURMAS</strong> <br/><br/>
+            </h:form>
+            
+            <h:form id="formTabela" rendered="#{usuarioBean.verificaSessao()}">
+                <br/><br/>
+                <h:panelGrid columns="3">
+                    <br/> <p:inputText id="nomeBusca" value="#{turmaBean.busca}"/>
+                    <p:commandButton id="botaoBusca"  value="Pesquisar" icon="ui-icon-search" ajax="false"/>
+                    <br/>
+                </h:panelGrid>
+                <p:watermark for="nomeBusca" value="Digite o codigo" id="watermark" />
+
+                <p:dataTable value="#{turmaBean.listarTurmas()}" var="teste" id="tabela" >      
+                    <p:column>
+                        <f:facet name="header">
+                            CODIGO_TURMA
+                        </f:facet>
+                        <h:outputText value="#{teste.codigo}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            DISCIPLINA
+                        </f:facet>
+                        <h:outputText value="#{teste.disciplina.nome}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            CURSO
+                        </f:facet>
+                        <h:outputText value="#{teste.curso.nome}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            CARGA_TOTAL
+                        </f:facet>
+                        <h:outputText value="#{teste.cargaTotal}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            CARGA_SEMANAL
+                        </f:facet>
+                        <h:outputText value="#{teste.cargaSemanal}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            SEMESTRE
+                        </f:facet>
+                        <h:outputText value="#{teste.semestre}" rendered="#{teste.anual != true}"/>
+                        <h:outputText value="ANUAL" rendered="#{teste.anual == true}"/>
+                    </p:column>
+                    
+                    
+                    
+                    <p:column width="300">
+                        <f:facet name="header">
+                            AÇÕES
+                        </f:facet>
+
+                        <p:commandButton update=":formTabela:tabela"  value="Excluir" icon="ui-icon-close" actionListener="#{turmaBean.removerTurma(teste)}">
+                            <p:confirm header="Confirmação" message="Esta ação não poderá ser desfeita, deseja continuar?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" id="hehe">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+
+                        <h:outputText value=" "/>
+                        <p:commandButton id="botaoAtualizar" value="Editar" icon="ui-icon-wrench" action="#{turmaBean.carregarTurma(teste)}"/>
+                        
+                        <h:outputText value=" "/>
+                        <p:commandButton id="botaoDisciplinas" value="Ver Horarios" icon="ui-icon-note" action="#{turmaBean.verHorarios(teste)}"/>
+                    </p:column>
+                </p:dataTable>
+                <br/><br/>
+            </h:form>
+        </center>
+    </h:body> 
+</html>
+

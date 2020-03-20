@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Help</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <center>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Voltar" outcome="cadastrarPreferencia"  icon="ui-icon-arrowthick-1-w">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                </p:tabMenu>
+            </center>                
+        </h:form>
+
+        <h:form rendered="#{usuarioBean.sessaoExpiradaProfessor()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+
+
+
+        <center>
+            <h:form  rendered="#{usuarioBean.verificaSessaoProfessor()}">
+                <br/>
+                <p:panel id="panel" header="INSTRUÇÕES"><br/>
+                    <h:outputLabel style="font-weight: bold; font-family: serif" value="PREFERÊNCIAS" /><br/><br/> 
+                    <h:outputLabel value="As Disciplinas devem ser cadastradas de acordo com a preferência, da maior para a menor ( 1 > 2 > 3 ). "/>
+                    <h:outputLabel value="O modelo se encarregará de alocar o professor a turmas que cursam tais disciplinas, caso seja possível."/>
+                    <br/><br/><br/>
+                    <h:outputLabel style="font-weight: bold; font-family: serif" value="DESCARTES"/>
+                    <br/><br/>
+                    <h:outputLabel value="As disciplinas descarte são aquelas que o professor não tem segurança para lecionar, "/>
+                    <h:outputLabel value="ou simplesmente não queira. O sistema criará restrições no modelo para que o professor não pegue tais disciplinas."/><br/>
+                    <h:outputLabel value="*OBS: Uma disciplina descarte só será entregue ao respectivo professor em casos extremos."/>
+
+                </p:panel>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
+
+
+
+
+

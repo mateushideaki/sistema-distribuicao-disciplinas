@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Alocação de professores e turmas 5</title>
+    </h:head>
+    <h:body>
+
+        
+
+        <h:form rendered="#{usuarioBean.sessaoExpirada()}">
+            <center>
+                Sessão expirada. Por favor, refaça o login.<br/><br/>
+                <p:commandButton value="Fazer login" action="#{menuBean.telaLogin()}"/>
+            </center>
+        </h:form>
+
+
+
+        <center>
+
+            <h:form id="formTabela" rendered="#{usuarioBean.verificaSessao()}">
+                <br/>
+                <strong>ALOCAÇÃO DE PROFESSORES E TURMAS</strong> 
+                <br/><br/>
+                <p:panel id="panel" header="Passo 6 - Aceitação do resultado.">
+                    <br/>   
+                    <p:commandButton  value="Rejeitar resultado"  icon="ui-icon-circle-close" action="#{alocacaoBean.rejeitarResultado()}"/>
+                    <p:commandButton  value="Aceitar resultado"  icon="ui-icon-circle-check" action="#{alocacaoBean.salvarAlocacoes()}"/>
+                    <br/><br/>
+                    <p:dataTable  value="#{alocacaoBean.listarAlocacoes()}" var="teste" id="tabela">      
+                        <p:column>
+                            <f:facet name="header">
+                                REGISTRO
+                            </f:facet>
+                            <h:outputText value="#{teste.professor.registro}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                NOME
+                            </f:facet>
+                            <h:outputText value="#{teste.professor.nome}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                TURMA
+                            </f:facet>
+                            <h:outputText value="#{teste.turma.codigo}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                CURSO
+                            </f:facet>
+                            <h:outputText value="#{teste.turma.curso.nome}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                DISCIPLINA
+                            </f:facet>
+                            <h:outputText value="#{teste.turma.disciplina.nome}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                ANO
+                            </f:facet>
+                            <h:outputText value="#{teste.ano}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <br/><br/>
+                </p:panel>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
